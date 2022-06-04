@@ -1,0 +1,63 @@
+%! TEX root = **/000-main.tex
+% vim: spell spelllang=en:
+
+\section{Introduction}%
+\label{sec:introduction}
+
+The NBA Draft market is a highly competitive market where teams bid and draft
+players in the hopes of getting the next star player. To that end, team
+requiters are always on the lookout for new talent appearing in collegiate
+leagues. Finding new talent before other teams can give the edge over the
+competition. There are numerous websites and resources available that compile
+statistics of players, as such, modelling the performance of players using
+statistical techniques is common practice.
+
+\subsection{Goals}%
+\label{sub:goals}
+
+The aim of this project is to analyze to what extent the performance of a player
+in collegiate basketball leagues can be used to predict the players eventual
+performance in the national league.
+
+\subsection{Data sources}%
+\label{sub:data-sources}
+
+We used data from the following sources:
+
+\begin{itemize}
+  \item \href{http://www.basketball-reference.com}{basketball-reference.com} \cite{noauthor_basketball_nodate}
+  \item \href{http://www.nbastuffer.com}{nbastuffer.com} \cite{noauthor_nbastuffer_2017}
+  \item NBA official statistics \cite{noauthor_draft_nodate}
+  \item Kaggle collegiate and NBA player dataset \cite{noauthor_college_nodate,noauthor_t-rank_nodate}
+\end{itemize}
+
+The main source was basketball-reference. We used the rest used to add some
+additional variables.
+
+\subsubsection{Data collection}%
+\label{ssub:data-collection}
+
+We collected the data using a simple web scraper written in Python, which can be
+found in our source code repository.
+
+\section{Related previous work}%
+\label{sec:previous-work}
+
+There are a lot of studies that aim to model the performance of NBA players
+or basketball players in general \cite{terner_modeling_2020,
+casals_modelling_2013, kokanauskas_modelling_2021}.  But there are not as many
+studies on the collegiate league performance related to national league.
+
+There have been several studies on the performance of players in college
+basketball and the national league. However, most of them focus on the so called
+\emph{one-year-and-done} rule \cite{noauthor_nba_2006} set by the NBA in 2006.
+This rule requires players to be 19 years old and have finished high-school at least
+1 year prior to being drafted in the NBA. In practice, this means that most
+young talent ends up playing 1 year in the college league and then drops out to
+go to the national league.
+
+These studies have found that players with less college experience have slightly
+better offensive statistics in their first year on the national league compared to their
+college graduates counterparts \cite{ashley_explaining_2017}. Despite their better statistics,
+they commit more mistakes such as fouls and turnovers \cite{zestcott_one_2020}.
+
