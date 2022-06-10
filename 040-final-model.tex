@@ -4,5 +4,29 @@
 \section{Final Model}%
 \label{sec:final-model}
 
+To decide which model performed the best, we just had to get the results we obtained in each of the previous sections. According to both our metrics, the model that yielded the best scores is the Random Forest, which obtains an $R^2$ of 0.218 and a RMSE of 4.28.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{lcc}
+        \toprule
+        name & RMSE & $R^2$ \\
+        \midrule
+        OLS & 8.258 & -2.7e+21 \\
+        Ridge & 8.219 &  -0.01 \\
+        Lasso & 7.962 &  0.19 \\
+        ElasticNet & 7.963 &  0.19 \\
+        PCA-KNN-W & 4.87 & 0.02 \\
+        SVR-rbf & 4.357 & 0.2 \\
+        Random Forest & 4.28 & 0.218 \\
+        AdaBoost & 4.39 & 0.178 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Linear regression best models}
+    \label{ml:lr}
+\end{table}
+
 \subsection{Generalization estimation}
 \label{sub:generalization-estimation}
+
+To see if the model generalizes well to new data, we trained the model on the train set and did predictions on the unseen test set. The results were an $R^2$ of 0.2239 and a RMSE 4.79. Overall, this means that on average, our predictions 4.79 points off the ground truth. The model seems to be generalizing relatively well because the scores are not far from what we had before. Thus, we argue that there is no overfitting.

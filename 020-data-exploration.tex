@@ -7,9 +7,11 @@
 \subsection{Pre-processing}%
 \label{sub:pre-processing}
 
-As preprocessing, we had to drop all features related to NBA performance except for the target. This is because those metrics will not be available when drafting a new player. 
+As preprocessing, we had to drop all features related to NBA performance except for the target because those metrics will not be available when drafting a new player. 
 
 Additionally, we had to drop some rows with missing values in the target variable, which happens when a player is drafted into the NBA but does not play any minutes thus, not recording any stats. We also had to remove some rows corresponding to players that came to the NBA directly after high-score for whom we lacked data and other international players from non-well known leagues where no stats had been tracked.
+
+As we had mixed dataset. We decided to one hot encode the categorical variables and standardize the numerical ones.
 
 \subsection{Missing values}%
 \label{sub:missing-values}
@@ -43,7 +45,8 @@ values for each column. Some variables like \texttt{drb\_per\_g}, \texttt{orb\_p
   \end{tabular}
 \end{table}
 
-\subsection{Numeric variables correlation}%
+
+\subsection{Correlation between numeric variables}%
 \label{sub:numeric-corr}
 
 % Perk estava el vmax al corrplot? hi ha algo a amagar? XD
@@ -67,6 +70,16 @@ the most relevant are the negative correlations with age and seasons played.
   \label{fig:corrplot}
 \end{figure}
 
+
+\Cref{fig:pairplot} shows a pairplot of our target variable against the 4 other variables most
+correlated to it in our dataset. The diagonal shows each variable distribution. We can appreciate
+
+\begin{figure}[H]
+    \includegraphics{pairplot}
+    \caption{Pairplot of top 5 variables correlated to our target}
+    \label{fig:pairplot}
+\end{figure}
+
 \subsection{Feature selection/extraction}%
 \label{sub:feature-selection}
 
@@ -84,19 +97,26 @@ We also performed some feature selection to give us a first insight into which f
 
 \begin{figure}[H]
 \centering
-\begin{minipage}{.5\textwidth}
+\hspace*{\fill}%
+\begin{minipage}{.45\textwidth}
   \centering
+  \vspace{0pt}
   \includegraphics[width=1.0\linewidth]{figures/relieff.pdf}
   \captionof{figure}{Top and bottom 10 RReliefF weights}
   \label{fig:relief}
 \end{minipage}%
-\begin{minipage}{.5\textwidth}
+\hfill
+\begin{minipage}{.45\textwidth}
   \centering
+  \vspace{-5em}
   \includegraphics[width=1.0\linewidth]{figures/sfs.pdf}
   \captionof{figure}{SFS score by number of selected features}
   \label{fig:sfs}
 \end{minipage}
+\hspace*{\fill}%
 \end{figure}
+
+The feature selection process gave us a good idea of which features could be useful. We debated whether we should remove the worst ranked features. At the end, as we do not have a really large dataset, we thought it was a better approach to leave them in and take decisions later on.
 
 \subsection{Principal Component analysis}%
 \label{sub:pca}
@@ -179,11 +199,11 @@ attempts. In all cases, the best scores obtained were with either 3 or 2 cluster
 3 being the overall winner.
 
 
-\begin{figure}[H]
-  \includegraphics{kmeans}
-  \caption{KMeans plot}%
-  \label{fig:kmeans-3}
-\end{figure}
+%\begin{figure}[H]
+%  \includegraphics{kmeans}
+%  \caption{KMeans plot}%
+%  \label{fig:kmeans-3}
+%\end{figure}
 
 \begin{figure}[H]
   \includegraphics{kmeans_gm_spectral}

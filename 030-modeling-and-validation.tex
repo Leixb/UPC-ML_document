@@ -12,9 +12,8 @@ into a 20\% test 80\% training data split. We decided to do the split stratified
 different background.
 
 To ensure that the split is reproducible,
-we used \texttt{train\_test\_split} function with a fixed \texttt{random\_state}.
-
-The datasets were saved in different files in \texttt{data/} directory.
+we used \texttt{train\_test\_split} function with a fixed \texttt{random\_state}. The 
+datasets were saved in different files in \texttt{data/} directory.
 
 %TODO: NA???????
 %
@@ -43,13 +42,18 @@ searches for parameter tuning to mitigate overfitting. As opposed to the initial
 train-test split, we did not do stratification. All the cross validation steps
 used a fixed random state for reproducibility.
 
+\subsection{Metrics}
+\label{ssub:metrics}
+
+To evaluate the performance, we will use root-mean-square error (RMSE). Additionally, we will also use $R^2$, which is a metric that captures the proportion of variance of the dependent variable that is explained by the rest.
+
+\pagebreak
+
 \section{Modelling}%
 \label{sub:results}
 
 We tried several models to predict the value of our target variable. Since our target
-was a numerical variable, we tried models for regression, but we also experimented with
-classification models by discretizing the target variable into several categories.
-
+was a numerical variable, we tried models for regression.
 \subsection{Linear Regression}%
 \label{ssub:linear-regression}
 
@@ -100,7 +104,7 @@ We tried several models with different values of $k$ for weighted and non-weight
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\linewidth]{figures/knn.pdf}
+    \includegraphics[width=0.8\linewidth]{figures/knn.pdf}
     \caption{Knn plots}
     \label{fig:knn}
 \end{figure}
@@ -116,18 +120,30 @@ We also used Support Vector Regression models. In this case, we tried rbf, sigmo
     \toprule
     name & RMSE & $R^2$ & C &  poly\_degree &  epsilon & kernel \\
     \midrule
-    SVR-Poly-2 & 4.934976 & & -0.13 & 2.0 &  0.10 & poly \\
-    SVR-Poly-3 & 4.653794 & 0.09 & 1.0 & 3.0 & 0.10 & poly \\
-    SVR-sigmoid & 4.699737 & 0.06 & 0.1 & NaN & 0.01 & sigmoid \\
-    SVR-rbf & 4.357230 & 0.2 & 10.0 & NaN & 0.10 &  rbf \\
+    SVR-Poly-2 & 4.934976 & -0.13 & 10  & 2.0 &  0.10 & poly \\
+    SVR-Poly-3 & 4.653794 & 0.09 & 1 & 3.0 & 0.10 & poly \\
+    SVR-sigmoid & 4.699737 & 0.06 & 0.1 &     & 0.01 & sigmoid \\
+    SVR-rbf & 4.357230 & 0.2 & 10 &     & 0.10 &  rbf \\
     \bottomrule
     \end{tabular}
     \caption{SVM best models}
     \label{ml:svm}
 \end{table}
 
-\subsection{Kernel Ridge Regression}%
-\label{ssub:kernel-ridge-regression}
+\subsection{Multi Layer Perceptron Regressor}%
+\label{sub:mlpreg}
+
+Finally, we experimented with a Multi Layer perceptron regressor. We tried various combinations
+of layer configurations as well as activation functions using a Grid Search. We found
+that the best configuration was with layer sizes using logistic activation function,
+obtaining a $R^2$ of 0.18 using only one layer with 50 nodes. \Cref{tab:mlpr} shows a summary
+of the results for some of the configurations we tried.
+
+\begin{table}[H]
+\caption{MLP Regressor results}%
+\label{tab:mlpr}
+\input{mlpr_results}
+\end{table}
 
 \subsection{Ensemble learning}%
 \label{ssub:ensemble}
@@ -135,15 +151,16 @@ We also used Support Vector Regression models. In this case, we tried rbf, sigmo
 In this section, we will discuss several algorithms that combine multiple base estimators to make the predictions.
 
 \subsubsection{Random Forest}
-The first ensemble method we will use is Random Forest which use decision trees as base estimators.  It has many hyperparameters, among which we decided to optimize the 5 following: \texttt{max\_depth}, \texttt{max\_features}, \texttt{n\_estimators}, \texttt{min\_samples\_leaf}, \texttt{criterion} and \texttt{n\_estimators}. Of all configurations, the best model uses 500 estimators, Poisson as split criteria and all features, a max depth of 100 and minimum number of samples to be a leaf of 1.
-
-
+The first ensemble method we will use is Random Forest which uses decision trees as base estimators. It has many hyperparameters, among which we decided to optimize the 5 following: \texttt{max\_depth}, \texttt{max\_features}, \texttt{n\_estimators}, \texttt{min\_samples\_leaf}, \texttt{criterion} and \texttt{n\_estimators}. Of all configurations, the best model uses 500 estimators, Poisson as split criteria and all features, a max depth of 100 and minimum number of samples to be a leaf of 1. It obtained an $R^2$ of 0.218 and an RMSE of 4.282.
 
 \subsubsection{AdaBoost}
+We also used AdaBoost using decision trees of maximum depth 3 as base estimators. After performing grid search cross validation, the configuration with the best RMSE used only 100 estimators, a learning rate of 0.1 and  an exponential loss function. It obtained an $R^2$ of 0.178 and a RMSE of 4.39.	  
 
-\subsubsection{Voting}
+Once we had a reasonable set of parameters for each algorithm. We also wanted to see how each of them would perform when increasing the number of estimators. In \cref{fig:ense} we can clearly see how for the Random Forest the RMSE keeps decreasing as we add more estimators, while the AdaBoost seems to perform best with about 100 estimators and then the performance worsens. 
 
-%   {'criterion': 'poisson',
-%   'max_depth': None,
-%   'max_features': 'sqrt',
-%   'n_estimators': 500})}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{figures/ensemble.pdf}
+    \caption{RMSE vs number of estimators}
+    \label{fig:ense}
+\end{figure}
