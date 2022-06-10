@@ -7,5 +7,81 @@
 \subsection{Validation}%
 \label{sub:validation}
 
+\subsubsection{Train-Test Split}%
+
+We separated the data into a training set and a test set before starting any analysis
+into a 20\% test 80\% training data split. We decided to do the split stratified by
+\texttt{league\_type}, so that the training and test datasets remain balanced.
+
+To ensure that the split is reproducible,
+we used \texttt{train\_test\_split} function with a fixed \texttt{random\_state}.
+
+The datasets were saved in different files in \texttt{data/} directory.
+
+%TODO: NA???????
+%
+\begin{table}[htb]
+\centering
+\caption{Train-test split}
+\label{tab:train-test-split}
+\begin{tabular}{lrr}
+  \toprule
+  \textbf{league\_type} & \textbf{Train} & \textbf{Test} \\
+  \midrule
+  College        &  739  & 186 \\
+  NA             &  150  &  37 \\
+  International  &  143  &  36 \\
+  G-league       &   16  &   4 \\
+  \bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Cross-validation}%
+\label{ssub:cross-validation}
+
+For all the models, we used 5-fold cross validation to evaluate the performance
+of the model. The same kind of 5-fold cross validation was used when doing grid
+searches for parameter tuning to mitigate overfitting. As opposed to the initial
+train-test split, we did not do stratification. All the cross validation steps
+used a fixed random state for reproducibility.
+
+\pagebreak
 \subsection{Results}%
 \label{sub:results}
+
+We tried several models to predict the value of our target variable. Since our target
+was a numerical variable, we tried models for regression, but we also experimented with
+classification models by binning the target variable into several categories.
+
+\subsubsection{Linear Regression}%
+\label{ssub:linear-regression}
+
+\subsubsection{Random Forest}%
+\label{ssub:random-forest}
+
+\subsubsection{Support Vector Machine}%
+\label{ssub:support-vector-machine}
+
+\subsubsection{K-Nearest Neighbors}%
+\label{ssub:k-nearest-neighbors}
+
+\subsubsection{Decision Tree}%
+\label{ssub:decision-tree}
+
+\subsubsection{Naive Bayes}%
+\label{ssub:naive-bayes}
+
+\subsubsection{Logistic Regression}%
+\label{ssub:logistic-regression}
+
+\subsubsection{Linear Discriminant Analysis}%
+\label{ssub:linear-discriminant-analysis}
+
+\subsubsection{Quadratic Discriminant Analysis}%
+\label{ssub:quadratic-discriminant-analysis}
+
+\subsubsection{Kernel Ridge Regression}%
+\label{ssub:kernel-ridge-regression}
+
+\subsubsection{Multi Layer Perceptron Regression}%
+\label{ssub:multi-layer-perceptron-regression}
