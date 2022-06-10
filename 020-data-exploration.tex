@@ -115,21 +115,25 @@ year.
   \label{tab:pca-weights}
   \begin{tabular}{clr}
     \toprule
-    \textbf{Component}   & \textbf{Feature}                                              & \textbf{Weight} \\
+    \makecell{\textbf{Component}\\(variance)}
+                         & \textbf{Feature}                                              & \textbf{Weight} \\
     \midrule
-    \multirow{5}{*}{PC1} & Games Started                                                 & -0.317154       \\
+    \multirow{5}{*}{\makecell{\textbf{PC1} \\ (28.26\%)}}
+                         & Games Started                                                 & -0.317154       \\
                          & 2-Point Field Goal Attempts Per Game                          & -0.272108       \\
                          & Free Throws Per Game                                          & -0.270838       \\
                          & 2-Point Field Goals Per Game                                  & -0.251875       \\
                          & Free Throw Attempts Per Game                                  & -0.247214       \\
                          \midrule
-    \multirow{5}{*}{PC2} & 3-Point Field Goal Attempts Per Game                          & 0.435442        \\
+    \multirow{5}{*}{\makecell{\textbf{PC2} \\ (21.62\%)}}
+                         & 3-Point Field Goal Attempts Per Game                          & 0.435442        \\
                          & 3-Point Field Goals Per Game                                  & 0.369552        \\
-                         & 3-Point Field Goal Attempts Per Field Goal Attempt Percentage & 0.362316        \\
+                         & 3-Point Field Goal Attempts Per Field Goal Attempt \%         & 0.362316        \\
                          & Offensive Rebounds Per Game                                   & -0.285247       \\
                          & Blocks Per Game                                               & -0.237038       \\
                          \midrule
-    \multirow{5}{*}{PC3} & Year                                                          & -0.905053       \\
+   \multirow{5}{*}{\makecell{\textbf{PC3} \\ (9.25\%)}}
+                         & Year                                                          & -0.905053       \\
                          & Turnovers Percentage                                          & 0.171122        \\
                          & Defensive Rebounds Per Game                                   & -0.138406       \\
                          & Total Rebounds Per Game                                       & -0.130047       \\
