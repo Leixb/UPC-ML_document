@@ -17,28 +17,22 @@ statistical techniques is common practice.
 
 The aim of this project is to analyze to what extent the performance of a player
 in collegiate basketball leagues can be used to predict the player's eventual
-performance in the NBA.
+performance in the NBA. Although there are several advance metrics that combine several
+statistics to evaluate player performance, we will only focus on
+predicting a simpler metric like the points per game in the NBA.
 
 \subsection{Data sources}%
 \label{sub:data-sources}
 
-We used data from the following sources:
+% We used data from the following sources:
 
-\begin{itemize}
-  \item \href{http://www.basketball-reference.com}{basketball-reference.com} \cite{noauthor_basketball_nodate}
-  \item \href{http://www.nbastuffer.com}{nbastuffer.com} \cite{noauthor_nbastuffer_2017}
-  \item NBA official statistics \cite{noauthor_draft_nodate}
-  \item Kaggle collegiate and NBA player dataset \cite{noauthor_college_nodate,noauthor_t-rank_nodate}
-\end{itemize}
+% \begin{itemize}
+%   \item \href{http://www.basketball-reference.com}{basketball-reference.com} \cite{noauthor_basketball_nodate}
+%   \item \href{http://www.nbastuffer.com}{nbastuffer.com} \cite{noauthor_nbastuffer_2017}
+%   \item NBA official statistics \cite{noauthor_draft_nodate}
+%   \item Kaggle collegiate and NBA player dataset \cite{noauthor_college_nodate,noauthor_t-rank_nodate}
 
-The main source was basketball-reference. We used the rest to add some
-additional variables.
-
-\subsubsection{Data collection}%
-\label{ssub:data-collection}
-
-We collected the data using a simple web scraper written in Python, which can be
-found in our source code repository. It basically gets all players drafted between the years 2000 and 2020. For each of them, it obtains statistics about their NBA games and all the information available about their statistics before they entered the league.
+Originally, we planned to use a Kaggle dataset about collegiate and NBA data. However, we were unsatisfied because it did not contain international players and lacked some key statistics. That is why, we collected the data from \href{http://www.basketball-reference.com}{basketball-reference.com} using a simple web scraper written in Python, which can be found in our source code repository. It basically gets all players drafted between the years 2000 and 2020. For each of them, it obtains statistics about their NBA games and all the information available about their statistics before they entered the league.
 
 \section{Related previous work}%
 \label{sec:previous-work}

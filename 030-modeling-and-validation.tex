@@ -1,13 +1,10 @@
 %! TEX root = **/000-main.tex
 % vim: spell spelllang=en:
 
-\section{Modeling and Validation}%
-\label{sec:modeling-and-validation}
-
-\subsection{Validation}%
+\section{Validation protocol}%
 \label{sub:validation}
 
-\subsubsection{Train-Test Split}%
+\subsection{Train-Test Split}%
 
 We separated the data into a training set and a test set before starting any analysis
 into a 20\% test 80\% training data split. We decided to do the split stratified by
@@ -37,7 +34,7 @@ The datasets were saved in different files in \texttt{data/} directory.
 \end{tabular}
 \end{table}
 
-\subsubsection{Cross-validation}%
+\subsection{Cross-validation}%
 \label{ssub:cross-validation}
 
 For all the models, we used 5-fold cross validation to evaluate the performance
@@ -46,15 +43,14 @@ searches for parameter tuning to mitigate overfitting. As opposed to the initial
 train-test split, we did not do stratification. All the cross validation steps
 used a fixed random state for reproducibility.
 
-\pagebreak
-\subsection{Results}%
+\section{Modelling}%
 \label{sub:results}
 
 We tried several models to predict the value of our target variable. Since our target
 was a numerical variable, we tried models for regression, but we also experimented with
 classification models by discretizing the target variable into several categories.
 
-\subsubsection{Linear Regression}%
+\subsection{Linear Regression}%
 \label{ssub:linear-regression}
 
 As our target is continuous, our first approach was to try to solve the problem using linear regression. We started trying the Ordinary Least Squares (OLS) without much additional preprocessing and improved from there. We also tried several regularized models like Ridge which uses $L_1$ a penalty or Lasso which uses a $L_2$ penalty and ElasticNet which has a penalty that's a mix of both. For these models, we performed a grid-search cross-validation to select decent values for the penalties. Additionally, we tried using the \texttt{PolynomialFeatures} transformer with degree 2, which basically adds the degree-2 polynomial features along first the first-order interaction features.
@@ -77,7 +73,7 @@ As our target is continuous, our first approach was to try to solve the problem 
     \label{ml:lr}
 \end{table}
 
-\Cref{fig:lasso-res} shows the residuals between.
+\Cref{fig:lasso-res} shows the residuals and 
 
 \begin{figure}[H]
     \centering
@@ -86,7 +82,7 @@ As our target is continuous, our first approach was to try to solve the problem 
     \label{fig:lasso-res}
 \end{figure}
 
-Moreover, we studied the coefficients of Lasso, which was our best performing model. As many features were generated, \cref{fig:lasso-coeff} only shows the coefficients with the highest absolute values.
+Moreover, we studied the coefficients of Lasso, which was our best performing model. As many features were generated, \cref{fig:lasso-coeff} only shows the coefficients with the highest absolute values. Win-shares, steals per game and points per game have high positive values, while on the other hand age and seasons played have an inverse relation to the target. 
 
 \begin{figure}[H]
     \centering
@@ -94,11 +90,25 @@ Moreover, we studied the coefficients of Lasso, which was our best performing mo
     \caption{Top Lasso coefficients}
     \label{fig:lasso-coeff}
 \end{figure}
-\subsubsection{Random Forest}%
-\label{ssub:random-forest}
 
-\subsubsection{Support Vector Machine}%
+\subsection{K-Nearest Neighbors}%
+\label{ssub:k-nearest-neighbors}
+
+Before the draft, is it a very common approach for NBA scouts to try to find the NBA player that is most similar to the one they are evaluating. This way, they can have an idea of what to expect. We though KNN could perform great because it works similarly, as it makes its predictions according to the nearest neighbors.
+
+We tried several models with different values of $k$ for weighted and non-weighted versions of knn. Moreover, as knn tends to performance tends to worsen in highly irrelevant feature spaces, we also tried using PCA as a preprocessing step to reduce dimensionality. \Cref{fig:knn} shows the root mean squared error for several configurations. Overall, the best model was a weighted-knn with $k=10$ trained on the top 15 PCA principal components, which obtained 0.02 $R^2$ and 4.87 RMSE.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{figures/knn.pdf}
+    \caption{Knn plots}
+    \label{fig:knn}
+\end{figure}
+
+\subsection{Support Vector Machine}%
 \label{ssub:support-vector-machine}
+
+We also used Support Vector Regression models. In this case, we tried rbf, sigmoid and polynomial (degree 2,3) kernels and used cross validation to determine a decent value of the penalty hyperparameter ($C$). \Cref{ml:svm} the best performing configuration for each kernel. The best model was an RBF kernel SVM with $C=10$, which obtained 0.2 $R^2$ and 4.35 RMSE.
 
 \begin{table}[H]
     \centering
@@ -112,38 +122,28 @@ Moreover, we studied the coefficients of Lasso, which was our best performing mo
     SVR-rbf & 4.357230 & 0.2 & 10.0 & NaN & 0.10 &  rbf \\
     \bottomrule
     \end{tabular}
-    \caption{KNN best models}
-    \label{ml:knn}
+    \caption{SVM best models}
+    \label{ml:svm}
 \end{table}
 
-\subsubsection{K-Nearest Neighbors}%
-\label{ssub:k-nearest-neighbors}
-
-Before the draft, is it a very common approach for NBA scouts to try to find the NBA player that is most similar to the one they are evaluating. This way, they can have an idea of what to expect. We though KNN could perform great because it works similarly, as it makes its predictions according to the nearest neighbors.
-
-We tried several models with different values of $k$ for weighted and non-weighted versions of knn. Moreover, as knn tends to performance tends to worsen in highly irrelevant feature spaces, we also tried using PCA as a preprocessing step to reduce dimensionality. shows the root mean squared error for several configurations. Overall, the best model was a weighted-knn with $k=10$ trained on the top 15 PCA principal components, which obtained 0.02 $R^2$ and 4.87 RMSE.
-
-
-
-
-
-\subsubsection{Decision Tree}%
-\label{ssub:decision-tree}
-
-\subsubsection{Naive Bayes}%
-\label{ssub:naive-bayes}
-
-\subsubsection{Logistic Regression}%
-\label{ssub:logistic-regression}
-
-\subsubsection{Linear Discriminant Analysis}%
-\label{ssub:linear-discriminant-analysis}
-
-\subsubsection{Quadratic Discriminant Analysis}%
-\label{ssub:quadratic-discriminant-analysis}
-
-\subsubsection{Kernel Ridge Regression}%
+\subsection{Kernel Ridge Regression}%
 \label{ssub:kernel-ridge-regression}
 
-\subsubsection{Multi Layer Perceptron Regression}%
-\label{ssub:multi-layer-perceptron-regression}
+\subsection{Ensemble learning}%
+\label{ssub:ensemble}
+
+In this section, we will discuss several algorithms that combine multiple base estimators to make the predictions.
+
+\subsubsection{Random Forest}
+The first ensemble method we will use is Random Forest which use decision trees as base estimators.  It has many hyperparameters, among which we decided to optimize the 5 following: \texttt{max\_depth}, \texttt{max\_features}, \texttt{n\_estimators}, \texttt{min\_samples\_leaf}, \texttt{criterion} and \texttt{n\_estimators}. Of all configurations, the best model uses 500 estimators, Poisson as split criteria and all features, a max depth of 100 and minimum number of samples to be a leaf of 1.
+
+
+
+\subsubsection{AdaBoost}
+
+\subsubsection{Voting}
+
+%   {'criterion': 'poisson',
+%   'max_depth': None,
+%   'max_features': 'sqrt',
+%   'n_estimators': 500})}

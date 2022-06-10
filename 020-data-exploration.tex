@@ -7,15 +7,12 @@
 \subsection{Pre-processing}%
 \label{sub:pre-processing}
 
-As preprocessing, we had to drop all features related to NBA performance except for the target. This is because those metrics will not be available when drafting a new player. Additionally, we had to drop some rows with missing values in the target variable, this happens in case a player is drafted into the NBA but does not play any minutes thus, not recording any stats. We also had to remove some rows corresponding to players that came to the NBA directly after high-score for whom we lack data and other international players from non-well known leagues where no stats had been tracked.
+As preprocessing, we had to drop all features related to NBA performance except for the target. This is because those metrics will not be available when drafting a new player. 
+
+Additionally, we had to drop some rows with missing values in the target variable, which happens when a player is drafted into the NBA but does not play any minutes thus, not recording any stats. We also had to remove some rows corresponding to players that came to the NBA directly after high-score for whom we lacked data and other international players from non-well known leagues where no stats had been tracked.
 
 \subsection{Missing values}%
 \label{sub:missing-values}
-
-    % df['ts_pct'] = df['ts_pct'].fillna(df['pts_per_g'] / (2*(df['fga_per_g'] + 0.44 * df['fta_per_g'])))
-    % df['efg_pct'] = df['efg_pct'].fillna((df['fg_per_g'] + 0.5 * df['fg3_per_g']) / df['fga_per_g'])
-    % df['fg3a_per_fga_pct'] = df['fg3a_per_fga_pct'].fillna(df['fg3a_per_g'] / df['fga_per_g'])
-    % df['fta_per_fga_pct'] = df['fta_per_fga_pct'].fillna(df['fta_per_g'] / df['fga_per_g'])
 
 We had several columns with missing values, some of them with a high percentage of missing values. We decided to drop any column with more than 50\% missing values.
 
@@ -46,15 +43,40 @@ values for each column. Some variables like \texttt{drb\_per\_g}, \texttt{orb\_p
   \end{tabular}
 \end{table}
 
+\subsection{Numeric variables correlation}%
+\label{sub:numeric-corr}
+
+% Perk estava el vmax al corrplot? hi ha algo a amagar? XD
+% ah ok
+% Potser nomes posant la correlacio amb el target ja val. Esk tenim moltes variables i no se si es veu be
+% En plan un heatmap 1d. Pero aixi ja esta be. OK~
+% Jo vaig a fer ensembles.
+% ok, acabo d posar un par de plots mes per aqui i miro que fem amb la resta de models
+% Mes que res que ocupa mitja pagina, si veiem que no ens arriba ho movem al anex i posem el d 1d.
+\Cref{fig:corrplot} shows the correlation of numeric variables in our dataset. We can see some direct
+correlations between field goals (fg) and field attempts (fga) or
+minutes played (mp) and games played (g),
+which are expected.
+There is also a negative correlation between 3 point field goals and 2 point field goals
+and defensive rebounds. Regarding our target variable does not have any direct correlation higher than 0.2,
+the most relevant are the negative correlations with age and seasons played.
+
+\begin{figure}[H]
+  \includegraphics{corrplot}
+  \caption{Variable correlation}%
+  \label{fig:corrplot}
+\end{figure}
+
 \subsection{Feature selection/extraction}%
 \label{sub:feature-selection}
 
 We added some new features like:
-\begin{itemize}
+\begin{itemize}[topsep=0pt]
     \item \textbf{Age}: Age at which the player was drafted. We used the draft year and player birthday to compute it.
-    \item \textbf{Advanced stats:} Several advanced stats were missing for some players, nevertheless we realized that some of them could be computed from the data we had.
+    \item \textbf{Advanced stats:} Several advanced stats that had missings can be computed from the data we had.
     \begin{align*}
-    \texttt{efg\_pct} &= \frac{fg + 0.5 * fg3}{fga} & \texttt{ts\_pct} &= \frac{pts}{2*(fgag + 0.44*fta)} \\
+    \texttt{efg\_pct} &= \frac{\texttt{fg} + 0.5 \cdot \texttt{fg3}}{\texttt{fga}}
+  & \texttt{ts\_pct} &= \frac{\texttt{pts}}{2\left(\texttt{fgag} + 0.44 \cdot \texttt{fta}\right)} \\
     \end{align*}
 \end{itemize}
 
@@ -64,7 +86,7 @@ We also performed some feature selection to give us a first insight into which f
 \centering
 \begin{minipage}{.5\textwidth}
   \centering
-  \includegraphics[width=1.0\linewidth]{figures/relief.pdf}
+  \includegraphics[width=1.0\linewidth]{figures/relieff.pdf}
   \captionof{figure}{Top and bottom 10 RReliefF weights}
   \label{fig:relief}
 \end{minipage}%
@@ -102,7 +124,7 @@ in the first axis.
 \end{figure}
 
 If we analyze the most important features in the first 3 components as shown in
-\cref{fig:pca-weights}, we can see that the first component is tightly related
+\cref{tab:pca-weights}, we can see that the first component is tightly related
 to the 2-point field goals, the second one to the 3-point and the third one to
 year.
 
@@ -142,6 +164,29 @@ year.
 \subsection{Clustering}%
 \label{sub:clustering}
 
-We experimented with several clustering algorithms and transformations on the data. We
-found that the only meaningful Clusters we could identify were after scaling the data with
-a min-max scaler and transforming it using PCA.
+We tried several clustering algorithms on our data. As we have seen when performing the PCA, there is
+no clear clusters when analysing the principal components visually. Therefore, we don't expect the
+clustering analysis to provide much insight on our data.
+
+\begin{table}[htp]
+\caption{Clustering metrics obtained}%
+\label{tab:clustering_metrics}
+\input{clustering_scores}
+\end{table}
+
+\Cref{tab:clustering_metrics} shows the different metrics we obtained for different clustering
+attempts. In all cases, the best scores obtained were with either 3 or 2 clusters, with
+3 being the overall winner.
+
+
+\begin{figure}[H]
+  \includegraphics{kmeans}
+  \caption{KMeans plot}%
+  \label{fig:kmeans-3}
+\end{figure}
+
+\begin{figure}[H]
+  \includegraphics{kmeans_gm_spectral}
+  \caption{KMeans, GM and spectral with 3 clusters on PCA projection}%
+  \label{fig:kmeans-gm}
+\end{figure}
