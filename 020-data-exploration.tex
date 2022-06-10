@@ -53,9 +53,9 @@ We added some new features like:
 \begin{itemize}
     \item \textbf{Age}: Age at which the player was drafted. We used the draft year and player birthday to compute it.
     \item \textbf{Advanced stats:} Several advanced stats were missing for some players, nevertheless we realized that some of them could be computed from the data we had.
-    \begin{align}
-    \texttt{efg\_pct} &= \frac{(fg + 0.5 * fg3)}{fga} & \texttt{ts\_pct} &= \frac{pts}{2*(fgag + 0.44*fta)} \\
-    \end{align}
+    \begin{align*}
+    \texttt{efg\_pct} &= \frac{fg + 0.5 * fg3}{fga} & \texttt{ts\_pct} &= \frac{pts}{2*(fgag + 0.44*fta)} \\
+    \end{align*}
 \end{itemize}
 
 We also performed some feature selection to give us a first insight into which features could be more useful. \Cref{fig:relief} shows the weights obtained using a fast filter method called RReliefF and \cref{fig:pca} shows the results of a sequential forward selection, which gives us a first idea of how many features need to be used.
@@ -81,6 +81,8 @@ We also performed some feature selection to give us a first insight into which f
 
 \subsection{Principal Component analysis}%
 \label{sub:pca}
+
+We performed PCA to visualize and find 
 
 \begin{figure}[H]
   \includegraphics{pca_screeplot}

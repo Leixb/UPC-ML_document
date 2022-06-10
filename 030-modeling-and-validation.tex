@@ -121,7 +121,7 @@ Moreover, we studied the coefficients of Lasso, which was our best performing mo
 
 Before the draft, is it a very common approach for NBA scouts to try to find the NBA player that is most similar to the one they are evaluating. This way, they can have an idea of what to expect. We though KNN could perform great because it works similarly, as it makes its predictions according to the nearest neighbors.
 
-We tried several models with different values of $k$ for weighted and non-weighted versions of knn. Moreover, as knn tends to performance tends to worsen in highly irrelevant feature spaces, we also tried using PCA as a preprocessing step to reduce dimensionality. shows the root mean squared error for several configurations. Overall, the best results were obtained using a weighted-knn with $k=10$ and the top 15 
+We tried several models with different values of $k$ for weighted and non-weighted versions of knn. Moreover, as knn tends to performance tends to worsen in highly irrelevant feature spaces, we also tried using PCA as a preprocessing step to reduce dimensionality. shows the root mean squared error for several configurations. Overall, the best model was a weighted-knn with $k=10$ trained on the top 15 PCA principal components, which obtained 0.02 $R^2$ and 4.87 RMSE.
 
 
 
