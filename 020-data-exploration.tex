@@ -7,14 +7,22 @@
 \subsection{Pre-processing}%
 \label{sub:pre-processing}
 
+As preprocessing, we had to drop all features related to NBA performance except for the target. This is because those metrics will not be available when drafting a new player. Additionally, we had to drop some rows with missing values in the target variable, this happens in case a player is drafted into the NBA but does not play any minutes thus, not recording any stats. We also had to remove some rows corresponding to players that came to the NBA directly after high-score for whom we lack data and other international players from non-well known leagues where no stats had been tracked. 
+
 \subsection{Missing values}%
 \label{sub:missing-values}
 
-Some columns had a lot of missing values. We decided to drop any column with
-more than 20\% missing values. The rest of missing values were imputed using a
-simple KNN imputation. \Cref{tab:missing-values} shows the number of imputed
-values for each column. The columns with 130 missing values, correspond all to
-the same 130 rows.
+    % df['ts_pct'] = df['ts_pct'].fillna(df['pts_per_g'] / (2*(df['fga_per_g'] + 0.44 * df['fta_per_g'])))
+    % df['efg_pct'] = df['efg_pct'].fillna((df['fg_per_g'] + 0.5 * df['fg3_per_g']) / df['fga_per_g'])
+    % df['fg3a_per_fga_pct'] = df['fg3a_per_fga_pct'].fillna(df['fg3a_per_g'] / df['fga_per_g'])
+    % df['fta_per_fga_pct'] = df['fta_per_fga_pct'].fillna(df['fta_per_g'] / df['fga_per_g'])
+
+We had several columns with missing values, some of them with a high percentage of missing values. We decided to drop any column with more than 50\% missing values. 
+
+Features like \texttt{ft\_pct}, \texttt{fg2\_pct}, \texttt{fg3\_pct} which correspond to shot percentages were null when the player had not attempted a shot from that distance. In this case, we considered the best option was to fill these nulls with 0s. 
+
+The rest of missing values were imputed using a simple KNN imputation. We believe KNN is a specially good method in this type of data, as players that share some characteristics tend to produce similar stats. \Cref{tab:missing-values} shows the number of imputed
+values for each column. Some variables like \texttt{drb\_per\_g}, \texttt{orb\_per\_g} are missing in players drafted before 2001, as at the time these metrics were not tracked. The columns with 130 missing values, are all advanced stats that are not recorded missing in some international leagues. 
 
 \begin{table}[htb]
   \centering
@@ -41,6 +49,36 @@ the same 130 rows.
 \subsection{Feature selection/extraction}%
 \label{sub:feature-selection}
 
+We added some new features like:
+\begin{itemize}
+    \item \textbf{Age}: Age at which the player was drafted. We used the draft year and player birthday to compute it.
+    \item \textbf{Advanced stats:} Several advanced stats were missing for some players, nevertheless we realized that some of them could be computed from the data we had.
+    \begin{align}
+    \texttt{efg\_pct} &= \frac{(fg + 0.5 * fg3)}{fga} & \texttt{ts\_pct} &= \frac{pts}{2*(fgag + 0.44*fta)} \\
+    \end{align}
+\end{itemize}
+
+We also performed some feature selection to give us a first insight into which features could be more useful. \Cref{fig:relief} shows the weights obtained using a fast filter method called RReliefF and \cref{fig:pca} shows the results of a sequential forward selection, which gives us a first idea of how many features need to be used.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1.0\linewidth]{figures/relief.pdf}
+  \captionof{figure}{Top and bottom 10 RReliefF weights}
+  \label{fig:relief}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1.0\linewidth]{figures/sfs.pdf}
+  \captionof{figure}{SFS score by number of selected features}
+  \label{fig:sfs}
+\end{minipage}
+\end{figure}
+
+\subsection{Visualization}%
+\label{sub:visualization}
+
 \subsection{Principal Component analysis}%
 \label{sub:pca}
 
@@ -55,9 +93,6 @@ the same 130 rows.
   \caption{PCA projection}%
   \label{fig:pca}
 \end{figure}
-
-\subsection{Visualization}%
-\label{sub:visualization}
 
 \subsection{Clustering}%
 \label{sub:clustering}
