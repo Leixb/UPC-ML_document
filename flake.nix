@@ -19,16 +19,19 @@
           python39Packages.pygments
         ];
 
+        SOURCE_DATE_EPOCH = "1654855200"; # 2022-06-10
+
         texlive = pkgs.texlive.combined.scheme-full;
       in
       rec {
         devShell = pkgs.mkShell {
+          inherit SOURCE_DATE_EPOCH;
           name = "texlive";
           buildInputs = [ dev-packages texlive ];
         };
 
         packages.document = latex.lib.latexmk {
-          inherit pkgs texlive;
+          inherit pkgs texlive SOURCE_DATE_EPOCH;
           src = ./.;
           shellEscape = true;
           minted = true;
